@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>canary — the catch</title>
+<meta name="description" content="One catch from the canary wall, with every line that put it there.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/avatar-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/canary.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="g1"></i></div><div class="grid" aria-hidden="true"></div>
+<div class="rail"><div class="wrap">
+  <a class="brand" href="index.html"><span class="lg"></span>canary</a>
+  <nav><a class="on" href="index.html#board">The wall</a><a href="check.html">Check</a><a href="index.html#how">How it works</a><a href="index.html#rules">Rules</a><a href="index.html#token">$<span class="sym">CANARY</span></a></nav>
+  <div class="right"><span class="clock">--:--:-- UTC</span><span id="agent" class="chip off"><i></i>agent</span><a class="xlink" href="#" target="_blank" rel="noopener" title="on X">𝕏</a><a class="btn fill" href="check.html">Check your deps</a></div>
+</div></div>
+
+<section class="page" style="border-top:0"><div class="wrap single">
+  <p class="crumbs"><a href="index.html#board">the wall</a> / the catch</p>
+  <div id="single"><div class="panel"><div class="empty">loading…</div></div></div>
+  <p class="privacy" style="margin-top:18px">Every line above is quoted from the package's own files as published on the registry. A tripped verdict is our rules' word; confirmed is the public record's. If this catch is wrong, it will be cleared here with the reason, and the mistake stays visible.</p>
+</div></section>
+
+<footer><div class="wrap">
+  <div><b>canary</b> <span class="d">· every new package, read before anyone installs it</span><br><span class="api-note"></span></div>
+  <div class="links"><a class="ghlink" href="#" target="_blank" rel="noopener">GitHub</a><a class="xlink2" href="#" target="_blank" rel="noopener">X</a><a href="check.html">Check a package</a></div>
+</div></footer>
+<script src="assets/canary.js"></script>
+<script>CANARY.initCatch();</script>
+</body>
+</html>

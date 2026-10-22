@@ -1,0 +1,5 @@
+requests>=2.31
+# optional, only if your network needs a browser-like tls fingerprint for some host:
+# curl_cffi>=0.7
+# tests:
+pytest>=8

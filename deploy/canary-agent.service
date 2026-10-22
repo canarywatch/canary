@@ -1,0 +1,35 @@
+[Unit]
+Description=canary agent: watches npm and pypi, reads new packages without running them, serves the wall
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=canary
+Group=canary
+WorkingDirectory=/opt/canary/app
+EnvironmentFile=-/etc/canary.env
+Environment=PATH=/opt/canary/venv/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/opt/canary/venv/bin/python -m agent -c /opt/canary/config.toml run
+Restart=always
+RestartSec=5
+# the agent only ever reads bytes from the registries; the box makes sure that is all it can do
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+ReadWritePaths=/opt/canary/data
+MemoryMax=1500M
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target

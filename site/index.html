@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>canary — every new package on npm and PyPI, read before anyone installs it</title>
+<meta name="description" content="An agent reads every new release on npm and PyPI without installing it, trips on evidence, and asks the public record. The catches go on a wall with the exact lines. Paste your dependency file and see what is on the record.">
+<meta property="og:title" content="canary — the wall of packages that tripped">
+<meta property="og:description" content="Every new npm and PyPI release, read without being run. Catches with the lines that caused them. Check your own dependency file in one paste.">
+<meta property="og:image" content="assets/brand/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/avatar-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/canary.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="g1"></i></div><div class="grid" aria-hidden="true"></div>
+<div class="rail"><div class="wrap">
+  <a class="brand" href="index.html"><span class="lg"></span>canary</a>
+  <nav><a class="on" href="#board">The wall</a><a href="#check">Check</a><a href="#how">How it works</a><a href="#rules">Rules</a><a href="#token">$<span class="sym">CANARY</span></a><a href="#never">Hard limits</a></nav>
+  <div class="right"><span class="clock">--:--:-- UTC</span><span id="agent" class="chip off"><i></i>agent</span><a class="xlink" href="#" target="_blank" rel="noopener" title="on X">𝕏</a><a class="btn fill" href="#check">Check your deps</a></div>
+</div></div>
+<div class="ticker" aria-hidden="true"><div class="track" id="ticker-track"></div></div>
+
+<header class="hero"><div class="wrap">
+  <div>
+    <p class="eyebrow">supply-chain watch · <b>npm + pypi</b> · read-only</p>
+    <h1 class="disp"><span>Every new package,</span><span>read before</span><span class="k">anyone installs it.</span></h1>
+    <p class="lead">An agent watches the npm and PyPI feeds. Each new release is fetched, unpacked in memory and read line by line: install hooks, hidden layers, secret files next to a network call, wallet grabs, download-and-run. <b>It never installs, never executes.</b> When the rules trip, the package goes on the wall with the exact lines. When the public record agrees, it says confirmed.</p>
+    <div class="cta"><a class="btn fill big" href="#check">Check your dependency file</a><a class="btn link big" href="#board">See the wall →</a></div>
+  </div>
+  <div class="term"><div class="bar"><i></i><i></i><i></i><span>canary-agent · journal</span></div><div class="body" id="term-body"><div class="ln" style="opacity:1"><span class="d">connecting to the agent…</span></div></div></div>
+  <div class="stats">
+    <div class="stat"><div class="l">packages read</div><div class="v" id="st-scanned">–</div></div>
+    <div class="stat"><div class="l">read in total</div><div class="v" id="st-total">–</div></div>
+    <div class="stat"><div class="l">tripped, 24h</div><div class="v a" id="st-catches">–</div></div>
+    <div class="stat"><div class="l">confirmed, 24h</div><div class="v r" id="st-confirmed">–</div></div>
+    <div class="stat"><div class="l">rules first</div><div class="v k" id="st-recall">–</div></div>
+  </div>
+</div></header>
+
+<div class="fast"><div class="wrap"><ol class="howfast" aria-label="how it works, short">
+  <li><span class="n">01</span><b>Every release, within minutes</b><span>The npm change feed and the PyPI update feed, polled every 20 seconds. New name or new version, it is fetched.</span></li>
+  <li><span class="n">02</span><b>Read, never run</b><span>Unpacked in memory with a safe extractor. Seven rules read the files, base64 layers are decoded and read too. Each hit keeps its file and line.</span></li>
+  <li><span class="n">03</span><b>Tripped, then confirmed</b><span>Enough weight puts it on the wall as tripped. Only a public advisory makes it confirmed. The gap between the two is measured and shown.</span></li>
+</ol></div></div>
+
+<section id="now" style="border-top:0;padding-top:34px"><div class="wrap">
+  <div class="now">
+    <div class="panel feedbox">
+      <div class="head"><span class="chip live"><i></i>live</span><b>the agent, right now</b><span class="n" id="feed-n">–</span></div>
+      <div class="feed" id="feed"><div class="empty">loading the log…</div></div>
+      <div class="foot"><span>every line is a package the agent read, with the verdict</span><span id="feeds-line" class="mono"></span></div>
+    </div>
+    <div class="panel">
+      <div class="head"><b>what the numbers mean</b></div>
+      <div style="padding:18px 20px;color:var(--dim);font-size:14.5px;line-height:1.65">
+        <p style="margin:0 0 12px"><b class="k">tripped</b> <span>means our rules added up to the line (score 7) on a new package, or one unmistakable finding landed in a version only hours old of a trusted name. The lines that did it are on the card. It is our word, not the record's.</span></p>
+        <p style="margin:0 0 12px"><b class="r">confirmed</b> <span>means OSV / OpenSSF carries a malware advisory for exactly that version. Nothing else earns the word.</span></p>
+        <p style="margin:0 0 12px"><b class="a">watch</b> <span>is the quiet list: something tripped but not enough. Never shown as a catch, never named on the wall. Established packages (a year old, or 50k downloads a week) stay there no matter what the heuristics say, unless the hijack rule fires.</span></p>
+        <p style="margin:0" id="recall-line">The recall number appears once the public record confirms a package the agent has read.</p>
+      </div>
+      <div class="foot"><span>a wrong catch gets cleared by a person, in public, with the reason</span><a href="#rules">the rules →</a></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="board" style="border-top:0"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">live</p><h2 class="disp">The wall</h2>
+      <p>Newest first. Every card carries the lines that put it there: rule, file, line number, the text itself. <b>No name goes on the wall without its lines.</b> Click through for the full evidence and the registry page.</p></div>
+    <a class="more" href="check.html">Scan one package →</a>
+  </div>
+  <div class="filters">
+    <button type="button" class="on" data-f="all">all</button><button type="button" data-f="confirmed">confirmed</button><button type="button" data-f="tripped">tripped</button><button type="button" data-f="npm">npm</button><button type="button" data-f="pypi">pypi</button><button type="button" data-f="cleared">cleared</button>
+    <span class="cnt" id="wall-count"></span>
+  </div>
+  <div class="catches" id="wall"><div class="empty">loading the wall…</div></div>
+</div></section>
+
+<section id="check"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">for you</p><h2 class="disp">Check your dependency file</h2>
+      <p>Paste or drop a <b>package.json, package-lock.json, yarn.lock, pnpm-lock.yaml, requirements.txt, pyproject.toml or Pipfile</b>. Every name is matched against the wall and against the public malware record. <b>The text is parsed in memory and dropped</b>; the agent keeps a counter, not your file.</p></div>
+  </div>
+  <div class="check">
+    <div>
+      <div class="drop" id="check-drop"><textarea class="in" id="check-text" placeholder='paste a dependency file, or drop it here
+
+{
+  "dependencies": { "express": "^4.19.2", ... }
+}'></textarea></div>
+      <div class="row">
+        <button type="button" class="btn fill" id="check-btn">Check</button>
+        <select id="check-eco"><option value="auto">detect the format</option><option value="npm">npm</option><option value="pypi">pypi</option></select>
+        <label class="btn ghost sm" for="check-file">open a file…</label><input type="file" id="check-file" class="hide" accept=".json,.txt,.toml,.lock,.yaml,.yml,Pipfile">
+        <button type="button" class="btn link sm" id="check-example">try an example</button>
+        <span class="d">⌘↵ to run</span>
+      </div>
+      <p class="privacy">Up to 500 names per check, ten checks a minute. A clean result says <b>nothing is on the record</b>, which is a fact about the record, not a promise about the code.</p>
+    </div>
+    <div class="panel result" id="check-out"><div class="empty">the result shows here: a table of what is on the record, or a clear line</div></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">the method</p><h2 class="disp">How it works</h2>
+      <p>One loop, four steps, all of it in the open. The code is a single Python package with no build step; the box runs it in a sandbox that cannot write outside its data directory.</p></div>
+    <a class="more ghlink" href="#" target="_blank" rel="noopener">The code on GitHub →</a>
+  </div>
+  <div class="how">
+    <div class="panel"><div class="n">01 · feed</div><h3 class="disp">New releases, as they land</h3><p>npm's <b>replicate _changes</b> stream and PyPI's <b>updates and newest-projects RSS</b>, polled every 20 seconds. Only names, no code yet. <b>@types/*</b> is skipped: generated typings, never a payload.</p></div>
+    <div class="panel"><div class="n">02 · fetch</div><h3 class="disp">Bytes, not an install</h3><p>The tarball or sdist is downloaded and unpacked <b>in memory</b> by an extractor that drops absolute paths, <b>..</b>, symlinks and device files, caps file count, file size and total size, and keeps only the bytes. Nothing touches the disk. Nothing is imported.</p></div>
+    <div class="panel"><div class="n">03 · read</div><h3 class="disp">Seven rules, each with evidence</h3><p>Install hooks, obfuscation, exfiltration (secret files <b>and</b> a network call), wallet grabs, shell shapes, stray binaries, lookalike names. Base64 blobs that decode to code become virtual files and get read too. <b>Tests, docs and CI files count for nothing</b> unless an install script points at them.</p></div>
+    <div class="panel"><div class="n">04 · record</div><h3 class="disp">Ask the record, then keep asking</h3><p>Every package is looked up at <b>OSV.dev</b>, which carries the OpenSSF malicious-packages advisories. A hit is confirmed. A tripped catch is re-asked every six hours for a month; when the record catches up, the feed says <b>how many hours after the rules did</b>.</p></div>
+    <div class="panel"><div class="n">05 · trusted names</div><h3 class="disp">Established packages are not shamed</h3><p>A year old or 50k downloads a week: heuristics alone <b>never</b> put it on the wall; it can only land in the quiet list. The one exception is the hijack rule: a version younger than 72 hours carrying one finding of weight 5 and a score over the line.</p></div>
+    <div class="panel"><div class="n">06 · corrections</div><h3 class="disp">A person can clear a catch</h3><p>A file on the box, <b>cleared.json</b>, maps a package to a reason. The catch stays visible, marked cleared, with the reason. Nothing is deleted. The number of cleared catches is a public counter, because a scanner that hides its mistakes is not worth reading.</p></div>
+  </div>
+  <div class="pipe"><span>feed</span><i>→</i><span>fetch bytes</span><i>→</i><span>safe unpack</span><i>→</i><span>decode layers</span><i>→</i><span>7 rules</span><i>→</i><span>score</span><i>→</i><span>osv</span><i>→</i><span>wall · watch · clean</span><i>→</i><span>recheck 6h</span></div>
+</div></section>
+
+<section id="rules"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">published</p><h2 class="disp">The rules</h2>
+      <p>Read straight from the agent's <b>rules.json</b>, so the page cannot drift from the code. A rule counts once, at its strongest hit; two weak rules do not add up to a catch on their own.</p></div>
+    <a class="more ghlink" href="#" target="_blank" rel="noopener">rules.py →</a>
+  </div>
+  <div class="panel"><table class="rules-t"><thead><tr><th>rule</th><th>weight</th><th>what trips it</th></tr></thead><tbody id="rules-body"><tr><td colspan="3" class="d">loading rules.json…</td></tr></tbody></table></div>
+  <div class="thresh">
+    <div class="stat"><div class="l">the line</div><div class="v"><span id="th-trip">7</span><small>score at which a new package is tripped</small></div></div>
+    <div class="stat"><div class="l">quiet list</div><div class="v"><span id="th-watch">3</span><small>score at which it is watched, never shown</small></div></div>
+    <div class="stat"><div class="l">strong finding</div><div class="v"><span id="th-strong">5</span><small>one of these in a fresh version trips a trusted name</small></div></div>
+    <div class="stat"><div class="l">fresh</div><div class="v"><span id="th-fresh">72 h</span><small>how young a version must be for the hijack rule</small></div></div>
+  </div>
+</div></section>
+
+<section id="token"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">the token · <b>solana</b></p><h2 class="disp">$<span class="sym">CANARY</span></h2>
+      <p>The project token. It gates nothing: the wall, the checks and the code stay free for everyone. It is how the project is funded and how it is held to account in public.</p></div>
+  </div>
+  <div class="token">
+    <div class="panel" id="mint"><div class="mintrow"><span class="eyebrow" style="margin:0">mint</span><code>loading…</code></div></div>
+    <div class="panel">
+      <p class="eyebrow">what holders get</p>
+      <p style="margin:0 0 10px;color:var(--dim);font-size:14.5px">The agent, the API and the wall are paid for by the project. The contract address, the burns and every change to the rules are posted on the project account first, so the token is the only place where the record of the project itself lives.</p>
+      <p style="margin:0;color:var(--dim);font-size:14.5px">Nothing on this page asks for a wallet. The Buy button opens a swap in your own wallet; the site never holds funds, keys or packages.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="never"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">by construction</p><h2 class="disp">Hard limits</h2>
+      <p>Things the agent cannot do, because the code has no path to them. Read the source; the list is short.</p></div>
+  </div>
+  <div class="never" id="never-list">
+    <div class="panel"><span class="x">×</span><div><b>Never installs or runs a package</b><p>Bytes are read from an in-memory archive. There is no <code>npm install</code>, no <code>pip</code>, no import, no subprocess anywhere in the agent.</p></div></div>
+    <div class="panel"><span class="x">×</span><div><b>Never names a package without its lines</b><p>A catch is a list of findings, each with a file, a line number and the text. A card without evidence cannot be rendered.</p></div></div>
+    <div class="panel"><span class="x">×</span><div><b>Never calls anything confirmed on its own</b><p>Confirmed is a word that only a public advisory at OSV / OpenSSF can earn. Our rules can say tripped, and that is all they can say.</p></div></div>
+    <div class="panel"><span class="x">×</span><div><b>Never keeps what you paste</b><p>The check endpoint parses the text, answers, and drops it. The data directory holds the wall and counters; your dependency file is never written.</p></div></div>
+    <div class="panel"><span class="x">×</span><div><b>Never posts, never trades</b><p>The agent has no credentials of any kind. No X account, no wallet, no tokens. It writes json files, and that is the whole of its output.</p></div></div>
+    <div class="panel"><span class="x">×</span><div><b>Never hides a mistake</b><p>Cleared catches stay on the wall with the reason. Misses against the public record are counted and shown as the recall number, even when that number is embarrassing.</p></div></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div><b>canary</b> <span class="d">· every new package, read before anyone installs it</span><br><span class="api-note"></span></div>
+  <div class="links"><a class="ghlink" href="#" target="_blank" rel="noopener">GitHub</a><a class="xlink2" href="#" target="_blank" rel="noopener">X</a><a href="check.html">Check a package</a><a href="#rules">Rules</a></div>
+</div></footer>
+<script src="assets/canary.js"></script>
+<script>CANARY.init();</script>
+</body>
+</html>

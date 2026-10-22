@@ -1,0 +1,26 @@
+# canary: copy to config.toml and edit. everything has a default.
+
+[agent]
+data_dir = "./data"        # state.json, catches.json, watch.json, events.json, rules.json live here
+npm = true                 # watch registry.npmjs.org through replicate.npmjs.com/_changes
+pypi = true                # watch pypi.org through its rss feeds
+workers = 4                # packages fetched and read at once
+poll_s = 20                # seconds between feed polls and file writes
+max_catches = 600          # wall length
+max_watch = 400            # quiet list length
+recheck_days = 30          # how long a tripped catch keeps being re-asked at osv
+popular_refresh_h = 24     # how often the popular-names list (typosquat rule) is refreshed
+extra_popular = []         # names to protect from lookalikes besides the registry's own top lists
+
+[server]
+host = "127.0.0.1"         # put caddy or nginx in front; the agent itself speaks plain http
+port = 8791
+cors = "*"
+
+[links]
+# everything the site shows about the project comes from here, so one edit + restart changes it everywhere
+token_mint = ""            # the token's contract address, once it exists; empty hides the buy button
+token_symbol = "CANARY"
+x = ""                     # the project account on X, once it exists; empty hides the link
+github = "https://github.com/canarywatch/canary"
+site = ""

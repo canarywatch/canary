@@ -1,0 +1,22 @@
+# /etc/caddy/sites/canary.caddy  -  https for the canary agent.
+# __HOST__ is <ip>.sslip.io (filled in by install.sh) so the site can read the agent before a domain exists;
+# __DOMAIN__ is the real api host once DNS points here (DOMAIN=api.example.com when running install.sh).
+# CORS headers come from the agent itself; adding them here too makes browsers reject the duplicate.
+# /site.zip is the static site bundled by install.sh for a Netlify drop; /canary.git is the source for GitHub's importer.
+__HOST__ __DOMAIN__ {
+    encode gzip
+    handle /site.zip {
+        root * /opt/canary/data
+        header Access-Control-Allow-Origin *
+        header Cache-Control no-store
+        file_server
+    }
+    handle /canary.git/* {
+        root * /opt/canary/data
+        header Cache-Control no-store
+        file_server
+    }
+    handle {
+        reverse_proxy 127.0.0.1:8792
+    }
+}

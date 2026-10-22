@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>canary — check a package or a dependency file</title>
+<meta name="description" content="Scan one npm or PyPI package without installing it, or paste a dependency file and see which names are on the wall or in a public malware advisory.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/avatar-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/canary.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="g1"></i></div><div class="grid" aria-hidden="true"></div>
+<div class="rail"><div class="wrap">
+  <a class="brand" href="index.html"><span class="lg"></span>canary</a>
+  <nav><a href="index.html#board">The wall</a><a class="on" href="check.html">Check</a><a href="index.html#how">How it works</a><a href="index.html#rules">Rules</a><a href="index.html#token">$<span class="sym">CANARY</span></a></nav>
+  <div class="right"><span class="clock">--:--:-- UTC</span><span id="agent" class="chip off"><i></i>agent</span><a class="xlink" href="#" target="_blank" rel="noopener" title="on X">𝕏</a><a class="btn fill" href="index.html#board">The wall</a></div>
+</div></div>
+
+<section class="page" style="border-top:0"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">one package</p><h2 class="disp">Scan a package</h2>
+      <p>The agent fetches that exact release from the registry, unpacks it in memory, runs the seven rules and asks the public record. <b>5 to 20 seconds.</b> You get the same card the wall gets, with every line. A tripped or confirmed result goes on the wall like any other catch.</p></div>
+  </div>
+  <div class="row" style="margin:0 0 18px">
+    <select id="scan-eco"><option value="npm">npm</option><option value="pypi">pypi</option></select>
+    <input class="in" id="scan-name" placeholder="package name, or name@version" spellcheck="false" autocapitalize="off">
+    <button type="button" class="btn fill" id="scan-btn">Scan</button>
+    <span class="d">four scans a minute per address</span>
+  </div>
+  <div class="scanbox" id="scan-out"><div class="panel"><div class="empty">the verdict and the lines show here</div></div></div>
+</div></section>
+
+<section id="check"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">a whole project</p><h2 class="disp">Check a dependency file</h2>
+      <p>Paste or drop a <b>package.json, package-lock.json, yarn.lock, pnpm-lock.yaml, requirements.txt, pyproject.toml or Pipfile</b>. Every name is matched against the wall and the public malware record. <b>The text is parsed in memory and dropped.</b></p></div>
+  </div>
+  <div class="check">
+    <div>
+      <div class="drop" id="check-drop"><textarea class="in" id="check-text" placeholder="paste a dependency file, or drop it here"></textarea></div>
+      <div class="row">
+        <button type="button" class="btn fill" id="check-btn">Check</button>
+        <select id="check-eco"><option value="auto">detect the format</option><option value="npm">npm</option><option value="pypi">pypi</option></select>
+        <label class="btn ghost sm" for="check-file">open a file…</label><input type="file" id="check-file" class="hide" accept=".json,.txt,.toml,.lock,.yaml,.yml,Pipfile">
+        <button type="button" class="btn link sm" id="check-example">try an example</button>
+        <span class="d">⌘↵ to run</span>
+      </div>
+      <p class="privacy">Up to 500 names per check, ten checks a minute. A clean result says <b>nothing is on the record</b>, which is a fact about the record, not a promise about the code.</p>
+    </div>
+    <div class="panel result" id="check-out"><div class="empty">the result shows here</div></div>
+  </div>
+  <div class="pipe" style="margin-top:30px"><span>curl</span><i>·</i><span class="mono" style="font-size:12px;border:0;padding:0;color:var(--dim)">curl -s -X POST &lt;agent&gt;/check -H 'content-type: application/json' --data-binary @- &lt;&lt;&lt; "{\"text\": $(jq -Rs . &lt; package.json)}"</span></div>
+</div></section>
+
+<footer><div class="wrap">
+  <div><b>canary</b> <span class="d">· every new package, read before anyone installs it</span><br><span class="api-note"></span></div>
+  <div class="links"><a class="ghlink" href="#" target="_blank" rel="noopener">GitHub</a><a class="xlink2" href="#" target="_blank" rel="noopener">X</a><a href="index.html#board">The wall</a><a href="index.html#rules">Rules</a></div>
+</div></footer>
+<script src="assets/canary.js"></script>
+<script>CANARY.initSmall();</script>
+</body>
+</html>
