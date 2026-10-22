@@ -2,6 +2,8 @@
 
 Every new release on npm and PyPI, **read before anyone installs it**.
 
+**Live:** [canarywatch.netlify.app](https://canarywatch.netlify.app) · agent json: [state](https://canary.162-35-122-197.sslip.io/state.json) · [catches](https://canary.162-35-122-197.sslip.io/catches.json)
+
 An agent watches the npm and PyPI feeds. Each new release is fetched, unpacked **in memory**, and
 read line by line: install hooks, obfuscation, secret files next to a network call, wallet grabs,
 shell shapes, stray binaries, lookalike names. **It never installs and never executes anything.**
