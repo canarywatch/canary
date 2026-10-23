@@ -2,7 +2,7 @@
 
 Every new release on npm and PyPI, **read before anyone installs it**.
 
-**Live:** [canarywatch.live](https://canarywatch.live) · agent json: [state](https://api.canarywatch.live/state.json) · [catches](https://api.canarywatch.live/catches.json)
+**Live:** [canarywatch.live](https://canarywatch.live) · X: [@canarywatch_sol](https://x.com/canarywatch_sol) · agent json: [state](https://api.canarywatch.live/state.json) · [catches](https://api.canarywatch.live/catches.json)
 
 An agent watches the npm and PyPI feeds. Each new release is fetched, unpacked **in memory**, and
 read line by line: install hooks, obfuscation, secret files next to a network call, wallet grabs,
